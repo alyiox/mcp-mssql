@@ -7,7 +7,7 @@
 
 A read-only [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for Microsoft SQL Server that supports metadata discovery, parameterized queries, and query analysis, with profile-based configuration and strict no-DML/DDL enforcement.
 
-**Requirements:** .NET 10.0 SDK, SQL Server, and a connection string.
+**Requirements:** .NET 8.0 or later runtime (the tool targets `net8.0` and `net10.0`), SQL Server, and a connection string. Building from source requires the .NET 10.0 SDK.
 
 ## Quick start
 

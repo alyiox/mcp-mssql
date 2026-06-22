@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>mcp-mssql</ToolCommandName>
     <Description>Read-only Model Context Protocol (MCP) server for Microsoft SQL Server: metadata discovery, parameterized queries, and query analysis, with profile-based configuration and strict no-DML/DDL enforcement.</Description>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <UserSecretsId>3852cfb6-6088-4198-9394-a7c0cb1f19a0</UserSecretsId>
     <Authors>Jon X</Authors>
     <Company>Jon X</Company>

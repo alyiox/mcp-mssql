@@ -15,7 +15,10 @@ concurrency:
 permissions: {}
 
 env:
-  DOTNET_VERSION: "10.0.x"
+  DOTNET_VERSION: |
+    8.0.x
+    10.0.x
+  TARGET_FRAMEWORKS: "net8.0 net10.0"
   CONFIGURATION: "Release"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -84,7 +87,14 @@ jobs:
       - name: Test
         env:
           MCPMSSQL_CONNECTION_STRING: "Server=localhost,1433;Database=master;User Id=sa;Password=YourStrong@Passw0rd123;TrustServerCertificate=True;Encrypt=True;Initial Catalog=McpMssqlTest"
-        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal -- --coverage --coverage-output-format cobertura
+        # Run each target framework sequentially. The suite shares a single
+        # SQL Server database that the fixtures drop and recreate on init, so
+        # running the net8.0 and net10.0 test modules in parallel would race
+        # on that shared database.
+        run: |
+          for framework in ${{ env.TARGET_FRAMEWORKS }}; do
+            dotnet test --framework "$framework" --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal -- --coverage --coverage-output-format cobertura
+          done
 
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.5.3
