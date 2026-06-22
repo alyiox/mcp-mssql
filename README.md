@@ -249,6 +249,15 @@ dotnet user-secrets set "MCPMSSQL_CONNECTION_STRING" \
   --project test/Alyio.McpMssql.Tests
 ```
 
+**One framework at a time.** The single `McpMssqlTest` database is shared by every test, and the fixtures drop and recreate it on initialization. Within one test process this is safe — the `SqlServer` collection disables parallelization. Across processes it is not: the test project targets both `net8.0` and `net10.0`, and `dotnet test` runs the two framework modules in parallel, so they race on that one database. There is no cross-process locking, so run a single framework at a time:
+
+```bash
+dotnet test --framework net8.0
+dotnet test --framework net10.0
+```
+
+CI does the same, iterating over `TARGET_FRAMEWORKS` sequentially.
+
 ## Why this instead of Data API Builder?
 
 Data API Builder (DAB) is a full REST/GraphQL API with CRUD and auth. This project is a small, read-only MCP server for agents: stdio, parameterized SELECT only, minimal surface. Choose this for agent workflows and low operational overhead; choose DAB for CRUD, REST/GraphQL, and rich policies.
