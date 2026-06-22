@@ -97,7 +97,7 @@ jobs:
           done
 
       - name: ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.5.3
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.5.10
         with:
           reports: '**/*.cobertura.xml'
           targetdir: 'coveragereport'
